@@ -3,16 +3,21 @@
 // import dotenv from "dotenv";
 
 // dotenv.config();
+// import fetch from "node-fetch";
+
+const dotenv = require("dotenv");
+dotenv.config();
 const PORT = 8000;
 const express = require("express");
 const cors = require("cors");
+const fetch = require("node-fetch");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-const API_KEY = "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";
+const API_KEY = process.env.API_KEY;
 
 app.post("/completions", async (req, res) => {
   const options = {
@@ -23,8 +28,7 @@ app.post("/completions", async (req, res) => {
     },
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: "how are you?" }],
-      max_tokens: 100,
+      messages: [{ role: "user", content: req.body.message }],
     }),
   };
   try {
